@@ -12,8 +12,8 @@ services:
     volumes:
       - ./app:/app
     working_dir: /app
-    env_file:
-      - .env
+    environment:
+      - MONGODB_URL=${MONGODB_URL}
     depends_on:
       - mongodb
 
@@ -21,8 +21,13 @@ services:
     image: mongo:5.0
     container_name: selfhosting-db
     restart: unless-stopped
+    ports:
+      - "${MONGODB_PORT}:27017"
     volumes:
       - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
 
 volumes:
   mongodb_data:
