@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: selfhosting-api
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./app:/app
+    working_dir: /app
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:5.0
+    container_name: selfhosting-db
+    restart: unless-stopped
+    volumes:
+      - mongodb_data:/data/db
+    env_file:
+      - .env
+
+volumes:
+  mongodb_data:
+    driver: local
